@@ -1,5 +1,9 @@
 {% extends 'mainapp/base.html' %}
 
 {% block content %}
-Hello World!
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="audio">
+    <button type="submit">Convert file to wav</button>
+</form>
 {% endblock %}
