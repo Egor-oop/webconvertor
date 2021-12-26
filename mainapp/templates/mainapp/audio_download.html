@@ -9,7 +9,7 @@
     {% for audio in object_list %}
     <tr>
         <td>{{ audio.audio_file }}</td>
-        <td><a class="btn btn-primary" href="/media/{{ audio.audio_file }}" role="button">Download</a>
+        <td><a target="_blank" class="btn btn-primary" href="/media/{{ audio.audio_file }}" role="button">Download</a>
     </tr>
     {% endfor %}
 </table>
