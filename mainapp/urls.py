@@ -1,8 +1,8 @@
 from django.urls import path
-from mainapp.views import index, audio
+from mainapp.views import index, audio, AudioDownloadListView
 
 urlpatterns = [
     path('', index, name='index'),
     path('audio', audio, name='audio'),
-    # path('convert_audio/<int:pk>', audio, name='audio_converted'),
+    path('audio/download', AudioDownloadListView.as_view(), name='audio_converted'),
 ]

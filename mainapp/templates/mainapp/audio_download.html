@@ -1,5 +1,16 @@
 {% extends 'mainapp/base.html' %}
 
 {% block content %}
-Hello world
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Download</th>
+    </tr>
+    {% for audio in object_list %}
+    <tr>
+        <td>{{ audio.audio_file }}</td>
+        <td><a class="btn btn-primary" href="/media/{{ audio.audio_file }}" role="button">Download</a>
+    </tr>
+    {% endfor %}
+</table>
 {% endblock %}
