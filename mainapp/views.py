@@ -11,18 +11,22 @@ os.chdir('media/audio')
 
 
 def audio_convert(filename):
-    src = f'{filename}'
+    src = f'{filename}.mp3'
     dst = f'{filename}.wav'
 
     sound = AudioSegment.from_mp3(src)
     sound.export(dst, format='wav')
 
 
-def update_last():
+def update_last(file_name):
     A = Audio.objects.latest('id')
-    file = A.audio_file
-    A.audio_file = f'{file}.wav'
+    file = A.id
+    A.audio_file = f'audio/{file}.wav'
     print(file)
+    old_name = f'{file_name}'
+    new_name = f'{A.id}.wav'
+
+    os.rename(old_name, new_name)
     A.save()
 
 
@@ -39,8 +43,8 @@ def audio(request):
         if form.is_valid():
             file = form.cleaned_data.get('audio_file').name
             form.save()
-            audio_convert(file)
-            update_last()
+            update_last(file)
+            # audio_convert(file)
             return redirect('audio_converted')
     else:
         form = AudioFileForm()
