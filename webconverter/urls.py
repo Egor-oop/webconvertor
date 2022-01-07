@@ -19,10 +19,12 @@ from django.contrib import admin
 from django.urls import path, include
 
 import mainapp.urls
+import imagesapp.urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(mainapp.urls)),
+    path('images/', include(imagesapp.urls)),
 ]
 
 if settings.DEBUG:

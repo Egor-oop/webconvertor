@@ -10,11 +10,11 @@
         </tr>
     </thead>
     <tbody>
-        {% for audio in object_list %}
+        {% for image in object_list %}
         <tr>
-            <td scope="row">{{ audio.id }}</td>
-            <td>{{ audio.image_file }}</td>
-            <td><a target="_blank" class="btn btn-primary" href="/media/{{ audio.image_file }}" role="button">Download</a></td>
+            <td scope="row">{{ image.id }}</td>
+            <td>{{ image.image_file }}</td>
+            <td><a target="_blank" class="btn btn-primary" href="/media/{{ image.image_file }}" role="button">Download</a></td>
         </tr>
         {% endfor %}
     </tbody>

@@ -7,18 +7,19 @@ from .models import Audio
 import os
 from pydub import AudioSegment
 
-os.chdir('media/audio')
-
 
 def audio_convert(filename):
-    src = f'{filename}.mp3'
+    os.chdir('media/audio')
+    src = f'{filename}'
     dst = f'{filename}.wav'
 
     sound = AudioSegment.from_mp3(src)
     sound.export(dst, format='wav')
+    os.chdir('../..')
 
 
 def update_last(file_name):
+    os.chdir('media/audio')
     A = Audio.objects.latest('id')
     file = A.id
     A.audio_file = f'audio/{file}.wav'
@@ -28,6 +29,7 @@ def update_last(file_name):
 
     os.rename(old_name, new_name)
     A.save()
+    os.chdir('../..')
 
 
 def index(request):
@@ -36,15 +38,15 @@ def index(request):
 
 
 def audio(request):
-    context = {'title': 'Audio'}
+    context = {'title': 'Audio Upload'}
 
     if request.method == 'POST':
         form = AudioFileForm(request.POST, request.FILES)
         if form.is_valid():
             file = form.cleaned_data.get('audio_file').name
             form.save()
+            audio_convert(file)
             update_last(file)
-            # audio_convert(file)
             return redirect('audio_converted')
     else:
         form = AudioFileForm()
@@ -63,3 +65,7 @@ class AudioDownloadListView(ListView):
         context = super(AudioDownloadListView, self).get_context_data(**kwargs)
         context['title'] = 'Download audio'
         return context
+
+
+def error(request):
+    return render(request, 'mainapp/error.html')
