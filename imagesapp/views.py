@@ -6,18 +6,33 @@ from .models import Image
 
 from PIL import Image as PImage
 
-import sys
 import os
 
 
 def convert_image(filename):
+    os.chdir('media/images')
     try:
         image = PImage.open(f'{filename}')
     except IOError:
         redirect('error')
 
     rgb_im = image.convert('RGB')
-    rgb_im.save(filename + '.wav')
+    rgb_im.save(filename + '.png')
+    os.chdir('../..')
+
+
+def update_last(file_name):
+    os.chdir('media/images')
+    A = Image.objects.latest('id')
+    file = A.id
+    A.image_file = f'images/{file}.png'
+    print(file)
+    old_name = f'{file_name}'
+    new_name = f'{A.id}.png'
+
+    os.rename(old_name, new_name)
+    A.save()
+    os.chdir('../..')
 
 
 def index(request):
@@ -26,8 +41,11 @@ def index(request):
     if request.method == 'POST':
         form = ImageFileForm(request.POST, request.FILES)
         if form.is_valid():
+            file = form.cleaned_data.get('image_file').name
             form.save()
-            return redirect('index')
+            convert_image(file)
+            update_last(file)
+            return redirect('image_converted')
     else:
         form = ImageFileForm()
     context['form'] = form
