@@ -11,27 +11,39 @@ import os
 
 def convert_image(filename):
     os.chdir('media/images')
+    A = Image.objects.latest('id')
+    file = A.id
+    print(file)
+
     try:
         image = PImage.open(f'{filename}')
     except IOError:
         redirect('error')
 
     rgb_im = image.convert('RGB')
-    rgb_im.save(filename + '.png')
-    os.chdir('../..')
 
+    if A.convert_to == '.png':
+        A.image_file = f'images/{file}.png'
+        rgb_im.save(filename + '.png')
+        old_name = f'{filename}'
+        new_name = f'{A.id}.png'
+        os.rename(old_name, new_name)
+        A.save()
+    elif A.convert_to == '.jpg':
+        A.image_file = f'images/{file}.jpg'
+        rgb_im.save(filename + '.jpg')
+        old_name = f'{filename}'
+        new_name = f'{A.id}.jpg'
+        os.rename(old_name, new_name)
+        A.save()
+    elif A.convert_to == '.jfif':
+        A.image_file = f'images/{file}.jfif'
+        rgb_im.save(filename + '.jfif')
+        old_name = f'{filename}'
+        new_name = f'{A.id}.jfif'
+        os.rename(old_name, new_name)
+        A.save()
 
-def update_last(file_name):
-    os.chdir('media/images')
-    A = Image.objects.latest('id')
-    file = A.id
-    A.image_file = f'images/{file}.png'
-    print(file)
-    old_name = f'{file_name}'
-    new_name = f'{A.id}.png'
-
-    os.rename(old_name, new_name)
-    A.save()
     os.chdir('../..')
 
 
@@ -44,7 +56,6 @@ def index(request):
             file = form.cleaned_data.get('image_file').name
             form.save()
             convert_image(file)
-            update_last(file)
             return redirect('image_converted')
     else:
         form = ImageFileForm()

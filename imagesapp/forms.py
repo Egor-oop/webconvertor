@@ -6,4 +6,4 @@ from .models import Image
 class ImageFileForm(forms.ModelForm):
     class Meta:
         model = Image
-        fields = ['image_file']
+        fields = ['image_file', 'convert_to']
