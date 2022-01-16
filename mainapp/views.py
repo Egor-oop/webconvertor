@@ -10,25 +10,54 @@ from pydub import AudioSegment
 
 def audio_convert(filename):
     os.chdir('media/audio')
-    src = f'{filename}'
-    dst = f'{filename}.wav'
+    A = Audio.objects.latest('id')
 
-    sound = AudioSegment.from_mp3(src)
-    sound.export(dst, format='wav')
+    if A.convert_to == '.wav':
+        src = f'{filename}'
+        dst = f'{filename}.wav'
+
+        sound = AudioSegment.from_mp3(src)
+        sound.export(dst, format='wav')
+
+        file = A.id
+        A.audio_file = f'audio/{file}.wav'
+        old_name = f'{filename}'
+        new_name = f'{A.id}.wav'
+        os.rename(old_name, new_name)
+        A.save()
+    elif A.convert_to == '.mp3':
+        src = f'{filename}'
+        dst = f'{filename}.mp3'
+
+        sound = AudioSegment.from_mp3(src)
+        sound.export(dst, format='mp3')
+
+        file = A.id
+        A.audio_file = f'audio/{file}.mp3'
+        old_name = f'{filename}'
+        new_name = f'{A.id}.mp3'
+        os.rename(old_name, new_name)
+        A.save()
+    elif A.convert_to == '.ogg':
+        src = f'{filename}'
+        dst = f'{filename}.ogg'
+
+        sound = AudioSegment.from_mp3(src)
+        sound.export(dst, format='ogg')
+
+        file = A.id
+        A.audio_file = f'audio/{file}.ogg'
+        old_name = f'{filename}'
+        new_name = f'{A.id}.ogg'
+        os.rename(old_name, new_name)
+        A.save()
+
     os.chdir('../..')
 
 
 def update_last(file_name):
     os.chdir('media/audio')
-    A = Audio.objects.latest('id')
-    file = A.id
-    A.audio_file = f'audio/{file}.wav'
-    print(file)
-    old_name = f'{file_name}'
-    new_name = f'{A.id}.wav'
 
-    os.rename(old_name, new_name)
-    A.save()
     os.chdir('../..')
 
 
@@ -46,7 +75,6 @@ def audio(request):
             file = form.cleaned_data.get('audio_file').name
             form.save()
             audio_convert(file)
-            update_last(file)
             return redirect('audio_converted')
     else:
         form = AudioFileForm()
