@@ -20,11 +20,14 @@ from django.urls import path, include
 
 import mainapp.urls
 import imagesapp.urls
+import videoapp.urls
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(mainapp.urls)),
     path('images/', include(imagesapp.urls)),
+    path('video/', include(videoapp.urls)),
 ]
 
 if settings.DEBUG:

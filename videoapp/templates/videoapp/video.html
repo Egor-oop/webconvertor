@@ -1,0 +1,9 @@
+{% extends 'mainapp/base.html' %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Convert video</button>
+</form>
+{% endblock %}
