@@ -24,9 +24,10 @@ def convert_video(filename):
         ffmpeg.run(stream)
 
         A.video_file = f'video/{file}.mov'
-        old_name = f'{filename}'
-        new_name = f'{A.id}.mov'
-        os.rename(old_name, new_name)
+
+        # old_name = f'{filename}'
+        # new_name = f'{A.id}.mov'
+        # os.rename(old_name, new_name)
     elif A.convert_to == '.avi':
         file = A.id
         stream = ffmpeg.input(f'{filename}')
@@ -34,10 +35,21 @@ def convert_video(filename):
         ffmpeg.run(stream)
 
         A.video_file = f'video/{file}.avi'
-        old_name = f'{filename}'
-        new_name = f'{A.id}.avi'
-        os.rename(old_name, new_name)
+        # old_name = f'{filename}'
+        # new_name = f'{A.id}.avi'
+        # os.rename(old_name, new_name)
+    elif A.convert_to == '.mp4':
+        file = A.id
+        stream = ffmpeg.input(f'{filename}')
+        stream = ffmpeg.output(stream, f'{file}.mp4')
+        ffmpeg.run(stream)
 
+        A.video_file = f'video/{file}.mp4'
+        # old_name = f'{filename}'
+        # new_name = f'{A.id}.avi'
+        # os.rename(old_name, new_name)
+    os.remove(filename)
+    A.save()
     os.chdir('../..')
 
     # A.convert_to == '.png':
