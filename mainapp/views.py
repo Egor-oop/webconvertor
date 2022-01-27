@@ -21,10 +21,10 @@ def audio_convert(filename):
 
         file = A.id
         A.audio_file = f'audio/{file}.wav'
+        A.save()
         old_name = f'{filename}'
         new_name = f'{A.id}.wav'
         os.rename(old_name, new_name)
-        A.save()
     elif A.convert_to == '.mp3':
         src = f'{filename}'
         dst = f'{filename}.mp3'
@@ -34,10 +34,10 @@ def audio_convert(filename):
 
         file = A.id
         A.audio_file = f'audio/{file}.mp3'
+        A.save()
         old_name = f'{filename}'
         new_name = f'{A.id}.mp3'
         os.rename(old_name, new_name)
-        A.save()
     elif A.convert_to == '.ogg':
         src = f'{filename}'
         dst = f'{filename}.ogg'
@@ -47,16 +47,10 @@ def audio_convert(filename):
 
         file = A.id
         A.audio_file = f'audio/{file}.ogg'
+        A.save()
         old_name = f'{filename}'
         new_name = f'{A.id}.ogg'
         os.rename(old_name, new_name)
-        A.save()
-
-    os.chdir('../..')
-
-
-def update_last(file_name):
-    os.chdir('media/audio')
 
     os.chdir('../..')
 

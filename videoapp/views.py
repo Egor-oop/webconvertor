@@ -8,21 +8,37 @@ import os
 from django.shortcuts import render
 import ffmpeg
 
-#stream = ffmpeg.input('video_1.mp4')
-#stream = ffmpeg.output(stream, 'o12.MOV')
-#ffmpeg.run(stream)
+# stream = ffmpeg.input('video_1.mp4')
+# stream = ffmpeg.output(stream, 'o12.MOV')
+# ffmpeg.run(stream)
 
 
 def convert_video(filename):
     os.chdir('media/video')
     A = Video.objects.latest('id')
-    file = A.id
-    print(file)
 
-    stream = ffmpeg.input(f'video/{file}')
-    stream = ffmpeg.output(stream, 'new_filename.MOV')
-    ffmpeg.run(stream)
+    if A.convert_to == '.mov':
+        file = A.id
+        stream = ffmpeg.input(f'{filename}')
+        stream = ffmpeg.output(stream, f'{file}.mov')
+        ffmpeg.run(stream)
 
+        A.video_file = f'video/{file}.mov'
+        old_name = f'{filename}'
+        new_name = f'{A.id}.mov'
+        os.rename(old_name, new_name)
+    elif A.convert_to == '.avi':
+        file = A.id
+        stream = ffmpeg.input(f'{filename}')
+        stream = ffmpeg.output(stream, f'{file}.avi')
+        ffmpeg.run(stream)
+
+        A.video_file = f'video/{file}.avi'
+        old_name = f'{filename}'
+        new_name = f'{A.id}.avi'
+        os.rename(old_name, new_name)
+
+    os.chdir('../..')
 
     # A.convert_to == '.png':
     # A.image_file = f'images/{file}.png'
@@ -35,7 +51,7 @@ def convert_video(filename):
 
 class VideoDownloadListView(ListView):
     model = Video
-    template_name = 'mainapp/video_download.html'
+    template_name = 'videoapp/video_download.html'
 
     def get_queryset(self, *, object_list=None, **kwargs):
         return super(VideoDownloadListView, self).get_queryset(**kwargs).order_by('-id')
@@ -44,6 +60,7 @@ class VideoDownloadListView(ListView):
         context = super(VideoDownloadListView, self).get_context_data(**kwargs)
         context['title'] = 'Download video'
         return context
+
 
 def index(request):
     context = {'title': 'Video Upload'}
