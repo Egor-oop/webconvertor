@@ -1,58 +1,42 @@
-from django.shortcuts import render, redirect
-from django.views.generic import ListView
-
-from .form import AudioFileForm
-from .models import Audio
+from django.shortcuts import render
 
 import os
+from django.core.files.storage import FileSystemStorage
 from pydub import AudioSegment
 
 
-def audio_convert(filename):
+def audio_convert(filename, extension):
     os.chdir('media/audio')
-    A = Audio.objects.latest('id')
+    full_name = None
 
-    if A.convert_to == '.wav':
+    if extension == '.wav':
         src = f'{filename}'
-        dst = f'{filename}.wav'
+        dst = f'{filename[:-4]}.wav'
 
         sound = AudioSegment.from_mp3(src)
         sound.export(dst, format='wav')
 
-        file = A.id
-        A.audio_file = f'audio/{file}.wav'
-        A.save()
-        old_name = f'{filename}'
-        new_name = f'{A.id}.wav'
-        os.rename(old_name, new_name)
-    elif A.convert_to == '.mp3':
+        full_name = f'{filename[:-4]}.wav'
+    elif extension == '.mp3':
         src = f'{filename}'
-        dst = f'{filename}.mp3'
+        dst = f'{filename[:-4]}.mp3'
 
         sound = AudioSegment.from_mp3(src)
         sound.export(dst, format='mp3')
 
-        file = A.id
-        A.audio_file = f'audio/{file}.mp3'
-        A.save()
-        old_name = f'{filename}'
-        new_name = f'{A.id}.mp3'
-        os.rename(old_name, new_name)
-    elif A.convert_to == '.ogg':
+        full_name = f'{filename[:-4]}.wav'
+    elif extension == '.ogg':
         src = f'{filename}'
-        dst = f'{filename}.ogg'
+        dst = f'{filename[:-4]}.ogg'
 
         sound = AudioSegment.from_mp3(src)
         sound.export(dst, format='ogg')
 
-        file = A.id
-        A.audio_file = f'audio/{file}.ogg'
-        A.save()
-        old_name = f'{filename}'
-        new_name = f'{A.id}.ogg'
-        os.rename(old_name, new_name)
+        full_name = f'{filename[:-4]}.wav'
 
+    os.remove(filename)
     os.chdir('../..')
+    return full_name
 
 
 def index(request):
@@ -61,32 +45,15 @@ def index(request):
 
 
 def audio(request):
-    context = {'title': 'Audio Upload'}
-
-    if request.method == 'POST':
-        form = AudioFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            file = form.cleaned_data.get('audio_file').name
-            form.save()
-            audio_convert(file)
-            return redirect('audio_converted')
-    else:
-        form = AudioFileForm()
-    context['form'] = form
-    return render(request, 'mainapp/audio.html', context)
-
-
-class AudioDownloadListView(ListView):
-    model = Audio
-    template_name = 'mainapp/audio_download.html'
-
-    def get_queryset(self, *, object_list=None, **kwargs):
-        return super(AudioDownloadListView, self).get_queryset(**kwargs).order_by('-id')
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(AudioDownloadListView, self).get_context_data(**kwargs)
-        context['title'] = 'Download audio'
-        return context
+    if request.method == 'POST' and request.FILES['upload'] and request.POST:
+        upload = request.FILES['upload']
+        fss = FileSystemStorage(location='media/audio/')
+        file = fss.save(upload.name, upload)
+        extension = request.POST.get('convert_to')
+        full_name = audio_convert(file, extension)
+        file_url = fss.url(f'/audio/{full_name}')
+        return render(request, 'mainapp/audio.html', {'file_url': file_url, 'title': 'Audio Upload'})
+    return render(request, 'mainapp/audio.html', {'title': 'Audio Upload'})
 
 
 def error(request):

@@ -7,6 +7,7 @@ import ffmpeg
 
 def convert_video(filename, extension):
     os.chdir('media/video')
+    full_name = None
 
     if extension == '.mov':
         stream = ffmpeg.input(f'{filename}')
