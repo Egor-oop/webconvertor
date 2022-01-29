@@ -1,9 +1,6 @@
 from django import forms
 
-from .models import Video
 
-
-class VideoFileForm(forms.ModelForm):
-    class Meta:
-        model = Video
-        fields = ['video_file', 'convert_to']
+class VideoFileForm(forms.Form):
+    video_file = forms.FileField()
+    convert_to = forms.CharField(max_length=6)

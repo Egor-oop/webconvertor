@@ -1,90 +1,43 @@
-from django.shortcuts import render, redirect
-from django.views.generic import ListView
-
-from .form import VideoFileForm
-from .models import Video
+from django.shortcuts import render
 
 import os
-from django.shortcuts import render
+from django.core.files.storage import FileSystemStorage
 import ffmpeg
 
-# stream = ffmpeg.input('video_1.mp4')
-# stream = ffmpeg.output(stream, 'o12.MOV')
-# ffmpeg.run(stream)
 
-
-def convert_video(filename):
+def convert_video(filename, extension):
     os.chdir('media/video')
-    A = Video.objects.latest('id')
 
-    if A.convert_to == '.mov':
-        file = A.id
+    if extension == '.mov':
         stream = ffmpeg.input(f'{filename}')
-        stream = ffmpeg.output(stream, f'{file}.mov')
+        stream = ffmpeg.output(stream, f'{filename[:-4]}.mov')
+        full_name = f'{filename[:-4]}.mov'
+        # full_name = stream
         ffmpeg.run(stream)
-
-        A.video_file = f'video/{file}.mov'
-
-        # old_name = f'{filename}'
-        # new_name = f'{A.id}.mov'
-        # os.rename(old_name, new_name)
-    elif A.convert_to == '.avi':
-        file = A.id
+    elif extension == '.avi':
         stream = ffmpeg.input(f'{filename}')
-        stream = ffmpeg.output(stream, f'{file}.avi')
+        stream = ffmpeg.output(stream, f'{filename[:-4]}.avi')
+        full_name = f'{filename[:-4]}.avi'
+        # full_name = stream
         ffmpeg.run(stream)
-
-        A.video_file = f'video/{file}.avi'
-        # old_name = f'{filename}'
-        # new_name = f'{A.id}.avi'
-        # os.rename(old_name, new_name)
-    elif A.convert_to == '.mp4':
-        file = A.id
+    elif extension == '.mp4':
         stream = ffmpeg.input(f'{filename}')
-        stream = ffmpeg.output(stream, f'{file}.mp4')
+        stream = ffmpeg.output(stream, f'{filename[:-4]}.mp4')
+        full_name = f'{filename[:-4]}.mp4'
+        # full_name = stream
         ffmpeg.run(stream)
-
-        A.video_file = f'video/{file}.mp4'
-        # old_name = f'{filename}'
-        # new_name = f'{A.id}.avi'
-        # os.rename(old_name, new_name)
     os.remove(filename)
-    A.save()
     os.chdir('../..')
-
-    # A.convert_to == '.png':
-    # A.image_file = f'images/{file}.png'
-    # rgb_im.save(filename + '.png')
-    # old_name = f'{filename}'
-    # new_name = f'{A.id}.png'
-    # os.rename(old_name, new_name)
-    # A.save()
-
-
-class VideoDownloadListView(ListView):
-    model = Video
-    template_name = 'videoapp/video_download.html'
-
-    def get_queryset(self, *, object_list=None, **kwargs):
-        return super(VideoDownloadListView, self).get_queryset(**kwargs).order_by('-id')
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(VideoDownloadListView, self).get_context_data(**kwargs)
-        context['title'] = 'Download video'
-        return context
+    return full_name
 
 
 def index(request):
-    context = {'title': 'Video Upload'}
-
-    if request.method == 'POST':
-        form = VideoFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            file = form.cleaned_data.get('video_file').name
-            form.save()
-            convert_video(file)
-            return redirect('video_converted')
-    else:
-        form = VideoFileForm()
-    context['form'] = form
-    return render(request, 'videoapp/video.html', context)
+    if request.method == 'POST' and request.FILES['upload'] and request.POST:
+        upload = request.FILES['upload']
+        fss = FileSystemStorage(location='media/video/')
+        file = fss.save(upload.name, upload)
+        extension = request.POST.get('convert_to')
+        full_name = convert_video(file, extension)
+        file_url = fss.url(f'/video/{full_name}')
+        return render(request, 'videoapp/video.html', {'file_url': file_url, 'title': 'Video Upload'})
+    return render(request, 'videoapp/video.html', {'title': 'Video Upload'})
