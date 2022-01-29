@@ -1,9 +1,24 @@
 {% extends 'mainapp/base.html' %}
 
 {% block content %}
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Convert image</button>
-</form>
+<div class="row">
+    {% if file_url %}
+    <div class="col-lg-4 col-md-6 col-sm-12 pb-4">
+        <a class="btn btn-dark my-4" href="{{ file_url }}">Download file</a>
+        {% else %}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="upload" accept=".png, .jpg, .jfif">
+            <br>
+            <select name="convert_to">
+                <option value=".png">PNG</option>
+                <option value=".jpg">JPG/JPEG</option>
+                <option value=".jfif">JFIF</option>
+            </select>
+            <br>
+            <button class="btn btn-dark my-4" type="submit">Submit</button>
+        </form>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

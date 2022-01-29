@@ -12,19 +12,16 @@ def convert_video(filename, extension):
         stream = ffmpeg.input(f'{filename}')
         stream = ffmpeg.output(stream, f'{filename[:-4]}.mov')
         full_name = f'{filename[:-4]}.mov'
-        # full_name = stream
         ffmpeg.run(stream)
     elif extension == '.avi':
         stream = ffmpeg.input(f'{filename}')
         stream = ffmpeg.output(stream, f'{filename[:-4]}.avi')
         full_name = f'{filename[:-4]}.avi'
-        # full_name = stream
         ffmpeg.run(stream)
     elif extension == '.mp4':
         stream = ffmpeg.input(f'{filename}')
         stream = ffmpeg.output(stream, f'{filename[:-4]}.mp4')
         full_name = f'{filename[:-4]}.mp4'
-        # full_name = stream
         ffmpeg.run(stream)
     os.remove(filename)
     os.chdir('../..')

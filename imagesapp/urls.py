@@ -1,7 +1,6 @@
 from django.urls import path
-from imagesapp.views import index, ImageDownloadListView
+from imagesapp.views import index
 
 urlpatterns = [
     path('', index, name='images'),
-    path('download/', ImageDownloadListView.as_view(), name='image_converted'),
 ]
