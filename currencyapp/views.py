@@ -28,6 +28,6 @@ def convert(request):
         price = request.POST['price']
         currency1 = request.POST['first_cur']
         currency2 = request.POST['second_cur']
-        convert_result = convert_currency(currency1, currency2, int(price))
+        convert_result = convert_currency(currency1, currency2, float(price))
         return render(request, 'currencyapp/convert_currency.html', {'convert_result': convert_result, 'title': 'Convert Currency'})
     return render(request, 'currencyapp/convert_currency.html', {'title': 'Convert Currency'})
