@@ -1,0 +1,30 @@
+{% extends 'mainapp/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-12 pb-4">
+        {% if convert_result %}
+        <h3>{{ convert_result }}</h3>
+        {% else %}
+        <h3>Waiting for result...</h3>
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input class="form-control" type="number" value="1" name="price" min="1">
+            <br>
+            <select class="form-select" name="first_cur">
+                <option value="RUB">RUB</option>
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+            </select>
+            <select class="form-select" name="second_cur">
+                <option value="USD">USD</option>
+                <option value="RUB">RUB</option>
+                <option value="EUR">EUR</option>
+            </select>
+            <br>
+            <button class="btn btn-dark my-4" type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

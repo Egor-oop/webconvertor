@@ -21,6 +21,7 @@ from django.urls import path, include
 import mainapp.urls
 import imagesapp.urls
 import videoapp.urls
+import currencyapp.urls
 
 
 urlpatterns = [
@@ -28,6 +29,7 @@ urlpatterns = [
     path('', include(mainapp.urls)),
     path('images/', include(imagesapp.urls)),
     path('video/', include(videoapp.urls)),
+    path('currency/', include(currencyapp.urls)),
 ]
 
 if settings.DEBUG:
