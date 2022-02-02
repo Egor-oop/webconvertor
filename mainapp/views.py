@@ -24,7 +24,7 @@ def audio_convert(filename, extension):
         sound = AudioSegment.from_mp3(src)
         sound.export(dst, format='mp3')
 
-        full_name = f'{filename[:-4]}.wav'
+        full_name = f'{filename[:-4]}.mp3'
     elif extension == '.ogg':
         src = f'{filename}'
         dst = f'{filename[:-4]}.ogg'

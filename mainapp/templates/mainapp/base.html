@@ -12,29 +12,29 @@
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <title>Convert | {{ title }}</title>
 </head>
-<body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<body class="bg">
+<nav class="navbar navbar-expand-lg dark-nav">
     <div class="container-fluid">
 <!--        <a class="navbar-brand" href="{% url 'index' %}">-->
 <!--            <img src="{% static 'img/logo.png' %}" alt="" width="80">-->
 <!--        </a>-->
-                <a class="navbar-brand" href="{% url 'index' %}">Etwäk</a>
+                <a class="navbar-brand text-white" href="{% url 'index' %}">Etwäk</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-link active" aria-current="page" href="{% url 'audio' %}">Audio</a>
+                <a class="nav-link active text-white" aria-current="page" href="{% url 'audio' %}">Audio</a>
             </div>
             <div class="navbar-nav">
-                <a class="nav-link active" aria-current="page" href="{% url 'images' %}">Image</a>
+                <a class="nav-link active text-white" aria-current="page" href="{% url 'images' %}">Image</a>
             </div>
             <div class="navbar-nav">
-                <a class="nav-link active" aria-current="page" href="{% url 'video' %}">Video</a>
+                <a class="nav-link active text-white" aria-current="page" href="{% url 'video' %}">Video</a>
             </div>
             <div class="navbar-nav">
-                <a class="nav-link active" aria-current="page" href="{% url 'cur_convert' %}">Currency</a>
+                <a class="nav-link active text-white" aria-current="page" href="{% url 'cur_convert' %}">Currency</a>
             </div>
         </div>
     </div>

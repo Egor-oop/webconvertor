@@ -1,3 +1,9 @@
 .bg {
-    background-color: ;
+    background-color: #121212;
+    color: #fff;
+}
+
+.dark-nav {
+    color: #fff;
+    background-color: #000;
 }
