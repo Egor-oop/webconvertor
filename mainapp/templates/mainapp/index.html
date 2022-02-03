@@ -1,10 +1,23 @@
 {% extends 'mainapp/base.html' %}
+{% load static %}
 
 {% block content %}
 <div class="d-grid gap-2 col-6 mx-auto">
-    <a class="btn btn-outline-success" href="{% url 'audio' %}" role="button">Audio</a>
-    <a class="btn btn-outline-success" href="{% url 'images' %}" role="button">Image</a>
-    <a class="btn btn-outline-success" href="{% url 'video' %}" role="button">Video</a>
-    <a class="btn btn-outline-success" href="{% url 'currency' %}" role="button">Currency</a>
+    <div onclick="document.location.href = {% url 'audio' %};" style="overflow: hidden" class="variant audio-image">
+        <img src="{% static 'img/audio.png' %}" class="btn-img" alt="">
+        <h3 class="variant-text">Audio</h3>
+    </div>
+    <div onclick="document.location.href = {% url 'images' %};" style="overflow: hidden" class="variant image-image">
+        <img src="{% static 'img/image.png' %}" class="btn-img" alt="">
+        <h3 class="variant-text">Image</h3>
+    </div>
+    <div onclick="document.location.href = {% url 'video' %};" style="overflow: hidden" class="variant video-image">
+        <img src="{% static 'img/video.png' %}" class="btn-img" alt="">
+        <h3 class="variant-text">Video</h3>
+    </div>
+    <div onclick="document.location.href = {% url 'currency' %};" style="overflow: hidden" class="variant currency-image">
+        <img src="{% static 'img/currency.png' %}" class="btn-img" alt="">
+        <h3 class="variant-text">Currency</h3>
+    </div>
 </div>
 {% endblock %}
