@@ -1,6 +1,9 @@
 from django.shortcuts import render
 
 import os
+from django.conf import settings
+from django.http import HttpResponse, Http404
+
 from django.core.files.storage import FileSystemStorage
 from pydub import AudioSegment
 
@@ -54,6 +57,10 @@ def audio(request):
         file_url = fss.url(f'/audio/{full_name}')
         return render(request, 'mainapp/audio.html', {'file_url': file_url, 'title': 'Audio Upload'})
     return render(request, 'mainapp/audio.html', {'title': 'Audio Upload'})
+
+
+# def download(request, filename):
+#     file_path = os.path.join(settings.MEDIA_ROOT, path)
 
 
 def error(request):

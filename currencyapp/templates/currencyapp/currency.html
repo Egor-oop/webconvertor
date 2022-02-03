@@ -1,0 +1,8 @@
+{% extends 'mainapp/base.html' %}
+
+{% block content %}
+<div class="d-grid gap-2 col-6 mx-auto">
+    <a class="btn btn-outline-success" href="{% url 'cur_convert' %}" role="button">Real Currencies</a>
+    <a class="btn btn-outline-success" href="{% url 'crypto_convert' %}" role="button">Cryptocurrencies</a>
+</div>
+{% endblock %}

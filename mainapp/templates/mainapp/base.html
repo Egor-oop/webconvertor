@@ -15,10 +15,10 @@
 <body class="bg">
 <nav class="navbar navbar-expand-lg dark-nav">
     <div class="container-fluid">
-<!--        <a class="navbar-brand" href="{% url 'index' %}">-->
-<!--            <img src="{% static 'img/logo.png' %}" alt="" width="80">-->
-<!--        </a>-->
-                <a class="navbar-brand text-white" href="{% url 'index' %}">Etwäk</a>
+        <!--        <a class="navbar-brand" href="{% url 'index' %}">-->
+        <!--            <img src="{% static 'img/logo.png' %}" alt="" width="80">-->
+        <!--        </a>-->
+        <a class="navbar-brand text-white" href="{% url 'index' %}">Etwäk</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -34,8 +34,24 @@
                 <a class="nav-link active text-white" aria-current="page" href="{% url 'video' %}">Video</a>
             </div>
             <div class="navbar-nav">
-                <a class="nav-link active text-white" aria-current="page" href="{% url 'cur_convert' %}">Currency</a>
+                <a class="nav-link active text-white" aria-current="page" href="{% url 'currency' %}">Currency</a>
             </div>
+<!--            <div class="navbar-nav">-->
+<!--                <li class="nav-item dropdown">-->
+<!--                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"-->
+<!--                       data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                        Currency-->
+<!--                    </a>-->
+<!--                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">-->
+<!--                        <li><a class="dropdown-item" href="cur_convert">Real Currencies</a></li>-->
+<!--                        <li><a class="dropdown-item" href="crypto_convert">Cryptocurrencies</a></li>-->
+<!--                        <li>-->
+<!--                            <hr class="dropdown-divider">-->
+<!--                        </li>-->
+<!--                        <li><a class="dropdown-item" href="#">Currency</a></li>-->
+<!--                    </ul>-->
+<!--                </li>-->
+<!--            </div>-->
         </div>
     </div>
 </nav>

@@ -10,15 +10,10 @@
         {% endif %}
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <select class="form-select" name="first_cur">
-                <option value="RUB">RUB</option>
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-            </select>
-            <select class="form-select" name="second_cur">
-                <option value="USD">USD</option>
-                <option value="RUB">RUB</option>
-                <option value="EUR">EUR</option>
+            <select class="form-select" name="crypto_cur">
+                <option value="BTC">BTC</option>
+                <option value="ETH">ETH</option>
+                <option value="DOGE">DOGE</option>
             </select>
             <br>
             <button class="btn btn-dark my-4" type="submit">Submit</button>
