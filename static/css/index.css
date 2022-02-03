@@ -13,6 +13,7 @@
     height: 350px;
     position: relative;
     cursor: pointer;
+    border-radius: 10px;
 }
 
 .variant-text {
