@@ -10,6 +10,7 @@ from pydub import AudioSegment
 
 def audio_convert(filename, extension):
     os.chdir('media/audio')
+    AudioSegment.ffprobe = "webconvertor/media/audio/ffprobe.exe"
     full_name = None
 
     if extension == '.wav':
@@ -35,7 +36,7 @@ def audio_convert(filename, extension):
         sound = AudioSegment.from_mp3(src)
         sound.export(dst, format='ogg')
 
-        full_name = f'{filename[:-4]}.wav'
+        full_name = f'{filename[:-4]}.ogg'
 
     os.remove(filename)
     os.chdir('../..')
@@ -53,8 +54,8 @@ def audio(request):
         fss = FileSystemStorage(location='media/audio/')
         file = fss.save(upload.name, upload)
         extension = request.POST.get('convert_to')
-        full_name = audio_convert(file, extension)
-        file_url = fss.url(f'/audio/{full_name}')
+        # full_name =
+        file_url = fss.url(f'/audio/{audio_convert(file, extension)}')
         return render(request, 'mainapp/audio.html', {'file_url': file_url, 'title': 'Audio Upload'})
     return render(request, 'mainapp/audio.html', {'title': 'Audio Upload'})
 
