@@ -7,6 +7,11 @@
         <a class="btn btn-dark my-4" href="{{ file_url }}">Download file</a>
         {% else %}
         <form method="post" enctype="multipart/form-data">
+            {% if extension_error %}
+            <div class="alert red-alert" role="alert">
+                Unknown file extension. Please choose an audio file.
+            </div>
+            {% endif %}
             {% csrf_token %}
             <input type="file" name="upload" accept=".wav, .mp3, .ogg">
             <br>

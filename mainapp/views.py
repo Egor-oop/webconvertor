@@ -17,9 +17,12 @@ def audio_convert(filename, extension):
         src = f'{filename}'
         dst = f'{filename[:-4]}.wav'
 
-        sound = AudioSegment.from_mp3(src)
-        sound.export(dst, format='wav')
+        try:
+            sound = AudioSegment.from_mp3(src)
+        except:
+            return 'Unknown extension'
 
+        sound.export(dst, format='wav')
         full_name = f'{filename[:-4]}.wav'
     elif extension == '.mp3':
         src = f'{filename}'
@@ -54,15 +57,13 @@ def audio(request):
         fss = FileSystemStorage(location='media/audio/')
         file = fss.save(upload.name, upload)
         extension = request.POST.get('convert_to')
-        # full_name =
-        file_url = fss.url(f'/audio/{audio_convert(file, extension)}')
+        full_name = audio_convert(file, extension)
+        if full_name == 'Unknown extension':
+            return render(request, 'mainapp/audio.html', {'extension_error': full_name, 'title': 'Audio Upload'})
+        file_url = fss.url(f'/audio/{full_name}')
         return render(request, 'mainapp/audio.html', {'file_url': file_url, 'title': 'Audio Upload'})
     return render(request, 'mainapp/audio.html', {'title': 'Audio Upload'})
 
 
 # def download(request, filename):
 #     file_path = os.path.join(settings.MEDIA_ROOT, path)
-
-
-def error(request):
-    return render(request, 'mainapp/error.html')
