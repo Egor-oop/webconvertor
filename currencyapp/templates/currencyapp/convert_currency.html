@@ -10,7 +10,7 @@
         {% endif %}
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <input class="form-control" type="text" value="1" name="price" min="0">
+            <input class="form-control" type="number" step="any" value="1" name="price" min="0">
             <br>
             <select class="form-select" name="first_cur">
                 <option value="RUB">RUB</option>
