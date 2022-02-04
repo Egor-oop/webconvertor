@@ -21,21 +21,21 @@ def convert_image(filename, extension):
     if extension == '.png':
         try:
             rgb_im.save(filename[:-4] + '.png')
-        except AttributeError:
+        except:
             os.chdir('../..')
             return 'Unknown extension'
         full_name = f'{filename[:-4]}.png'
     elif extension == '.jpg':
         try:
             rgb_im.save(filename[:-4] + '.jpg')
-        except AttributeError:
+        except:
             os.chdir('../..')
             return 'Unknown extension'
         full_name = f'{filename[:-4]}.jpg'
     elif extension == '.jfif':
         try:
             rgb_im.save(filename[:-4] + '.jfif')
-        except AttributeError:
+        except:
             os.chdir('../..')
             return 'Unknown extension'
         full_name = f'{filename[:-4]}.jfif'
