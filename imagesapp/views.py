@@ -19,13 +19,22 @@ def convert_image(filename, extension):
         redirect('error')
 
     if extension == '.png':
-        rgb_im.save(filename[:-4] + '.png')
+        try:
+            rgb_im.save(filename[:-4] + '.png')
+        except AttributeError:
+            return 'Unknown extension'
         full_name = f'{filename[:-4]}.png'
     elif extension == '.jpg':
-        rgb_im.save(filename[:-4] + '.jpg')
+        try:
+            rgb_im.save(filename[:-4] + '.jpg')
+        except AttributeError:
+            return 'Unknown extension'
         full_name = f'{filename[:-4]}.jpg'
     elif extension == '.jfif':
-        rgb_im.save(filename[:-4] + '.jfif')
+        try:
+            rgb_im.save(filename[:-4] + '.jfif')
+        except AttributeError:
+            return 'Unknown extension'
         full_name = f'{filename[:-4]}.jfif'
 
     os.remove(filename)
@@ -40,6 +49,8 @@ def index(request):
         file = fss.save(upload.name, upload)
         extension = request.POST.get('convert_to')
         full_name = convert_image(file, extension)
+        if full_name == 'Unknown extension':
+            return render(request, 'imagesapp/image.html', {'extension_error': full_name, 'title': 'Image Upload'})
         file_url = fss.url(f'/images/{full_name}')
         return render(request, 'imagesapp/image.html', {'file_url': file_url, 'title': 'Image Upload'})
     return render(request, 'imagesapp/image.html', {'title': 'Image Upload'})

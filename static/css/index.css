@@ -43,3 +43,8 @@
 .btn-img:hover {
     filter: brightness(80%);
 }
+
+.red-alert {
+    background-color: #6b2020;
+    width: 380px
+}
