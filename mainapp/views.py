@@ -20,6 +20,7 @@ def audio_convert(filename, extension):
         try:
             sound = AudioSegment.from_mp3(src)
         except:
+            os.chdir('../../')
             return 'Unknown extension'
 
         sound.export(dst, format='wav')
@@ -28,8 +29,10 @@ def audio_convert(filename, extension):
         src = f'{filename}'
         dst = f'{filename[:-4]}.mp3'
 
-        sound = AudioSegment.from_mp3(src)
-        sound.export(dst, format='mp3')
+        try:
+            sound = AudioSegment.from_mp3(src)
+        except:
+            sound.export(dst, format='mp3')
 
         full_name = f'{filename[:-4]}.mp3'
     elif extension == '.ogg':
@@ -59,6 +62,7 @@ def audio(request):
         extension = request.POST.get('convert_to')
         full_name = audio_convert(file, extension)
         if full_name == 'Unknown extension':
+            fss = FileSystemStorage(location='../../')
             return render(request, 'mainapp/audio.html', {'extension_error': full_name, 'title': 'Audio Upload'})
         file_url = fss.url(f'/audio/{full_name}')
         return render(request, 'mainapp/audio.html', {'file_url': file_url, 'title': 'Audio Upload'})
