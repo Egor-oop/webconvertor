@@ -13,17 +13,30 @@ def convert_video(filename, extension):
         stream = ffmpeg.input(f'{filename}')
         stream = ffmpeg.output(stream, f'{filename[:-4]}.mov')
         full_name = f'{filename[:-4]}.mov'
-        ffmpeg.run(stream)
+        try:
+            ffmpeg.run(stream)
+        except:
+            os.chdir('../..')
+            return 'Unknown extension'
+
     elif extension == '.avi':
         stream = ffmpeg.input(f'{filename}')
         stream = ffmpeg.output(stream, f'{filename[:-4]}.avi')
         full_name = f'{filename[:-4]}.avi'
-        ffmpeg.run(stream)
+        try:
+            ffmpeg.run(stream)
+        except:
+            os.chdir('../..')
+            return 'Unknown extension'
     elif extension == '.mp4':
         stream = ffmpeg.input(f'{filename}')
         stream = ffmpeg.output(stream, f'{filename[:-4]}.mp4')
         full_name = f'{filename[:-4]}.mp4'
-        ffmpeg.run(stream)
+        try:
+            ffmpeg.run(stream)
+        except:
+            os.chdir('../..')
+            return 'Unknown extension'
     os.remove(filename)
     os.chdir('../..')
     return full_name
@@ -36,6 +49,9 @@ def index(request):
         file = fss.save(upload.name, upload)
         extension = request.POST.get('convert_to')
         full_name = convert_video(file, extension)
+        if full_name == 'Unknown extension':
+            fss = FileSystemStorage(location='../../')
+            return render(request, 'videoapp/video.html', {'extension_error': full_name, 'title': 'Video Upload'})
         file_url = fss.url(f'/video/{full_name}')
         return render(request, 'videoapp/video.html', {'file_url': file_url, 'title': 'Video Upload'})
     return render(request, 'videoapp/video.html', {'title': 'Video Upload'})
