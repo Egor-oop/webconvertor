@@ -16,6 +16,7 @@ def convert_image(filename, extension):
         image = PImage.open(f'{filename}')
         rgb_im = image.convert('RGB')
     except IOError:
+        os.chdir('../..')
         return 'Unknown extension'
 
     if extension == '.png':
