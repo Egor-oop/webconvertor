@@ -32,14 +32,20 @@ def audio_convert(filename, extension):
         try:
             sound = AudioSegment.from_mp3(src)
         except:
-            sound.export(dst, format='mp3')
+            os.chdir('../../')
+            return 'Unknown extension'
 
+        sound.export(dst, format='mp3')
         full_name = f'{filename[:-4]}.mp3'
     elif extension == '.ogg':
         src = f'{filename}'
         dst = f'{filename[:-4]}.ogg'
 
-        sound = AudioSegment.from_mp3(src)
+        try:
+            sound = AudioSegment.from_mp3(src)
+        except:
+            os.chdir('../../')
+            return 'Unknown extension'
         sound.export(dst, format='ogg')
 
         full_name = f'{filename[:-4]}.ogg'
