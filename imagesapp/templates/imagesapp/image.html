@@ -11,6 +11,10 @@
             <div class="alert red-alert" role="alert">
                 Unknown file extension. Please choose an image.
             </div>
+            {% elif load_error %}
+            <div class="alert red-alert" role="alert">
+                {{ load_error }}
+            </div>
             {% endif %}
             {% csrf_token %}
             <input type="file" name="upload" accept=".png, .jpg, .jfif">

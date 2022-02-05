@@ -43,15 +43,18 @@ def convert_video(filename, extension):
 
 
 def index(request):
-    if request.method == 'POST' and request.FILES['upload'] and request.POST:
-        upload = request.FILES['upload']
-        fss = FileSystemStorage(location='media/video/')
-        file = fss.save(upload.name, upload)
-        extension = request.POST.get('convert_to')
-        full_name = convert_video(file, extension)
-        if full_name == 'Unknown extension':
-            fss = FileSystemStorage(location='../../')
-            return render(request, 'videoapp/video.html', {'extension_error': full_name, 'title': 'Video Upload'})
-        file_url = fss.url(f'/video/{full_name}')
-        return render(request, 'videoapp/video.html', {'file_url': file_url, 'title': 'Video Upload'})
+    try:
+        if request.method == 'POST' and request.FILES['upload'] and request.POST:
+            upload = request.FILES['upload']
+            fss = FileSystemStorage(location='media/video/')
+            file = fss.save(upload.name, upload)
+            extension = request.POST.get('convert_to')
+            full_name = convert_video(file, extension)
+            if full_name == 'Unknown extension':
+                fss = FileSystemStorage(location='../../')
+                return render(request, 'videoapp/video.html', {'extension_error': full_name, 'title': 'Video Upload'})
+            file_url = fss.url(f'/video/{full_name}')
+            return render(request, 'videoapp/video.html', {'file_url': file_url, 'title': 'Video Upload'})
+    except:
+        return render(request, 'videoapp/video.html', {'load_error': 'Please load a file', 'title': 'Video Upload'})
     return render(request, 'videoapp/video.html', {'title': 'Video Upload'})

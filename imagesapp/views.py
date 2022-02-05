@@ -47,15 +47,18 @@ def convert_image(filename, extension):
 
 
 def index(request):
-    if request.method == 'POST' and request.FILES['upload'] and request.POST:
-        upload = request.FILES['upload']
-        fss = FileSystemStorage(location='media/images/')
-        file = fss.save(upload.name, upload)
-        extension = request.POST.get('convert_to')
-        full_name = convert_image(file, extension)
-        if full_name == 'Unknown extension':
-            fss = FileSystemStorage(location='../../')
-            return render(request, 'imagesapp/image.html', {'extension_error': full_name, 'title': 'Image Upload'})
-        file_url = fss.url(f'/images/{full_name}')
-        return render(request, 'imagesapp/image.html', {'file_url': file_url, 'title': 'Image Upload'})
+    try:
+        if request.method == 'POST' and request.FILES['upload'] and request.POST:
+            upload = request.FILES['upload']
+            fss = FileSystemStorage(location='media/images/')
+            file = fss.save(upload.name, upload)
+            extension = request.POST.get('convert_to')
+            full_name = convert_image(file, extension)
+            if full_name == 'Unknown extension':
+                fss = FileSystemStorage(location='../../')
+                return render(request, 'imagesapp/image.html', {'extension_error': full_name, 'title': 'Image Upload'})
+            file_url = fss.url(f'/images/{full_name}')
+            return render(request, 'imagesapp/image.html', {'file_url': file_url, 'title': 'Image Upload'})
+    except:
+        return render(request, 'imagesapp/image.html', {'load_error': 'Please load a file', 'title': 'Image Upload'})
     return render(request, 'imagesapp/image.html', {'title': 'Image Upload'})

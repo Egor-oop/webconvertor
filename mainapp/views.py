@@ -61,19 +61,18 @@ def index(request):
 
 
 def audio(request):
-    if request.method == 'POST' and request.FILES['upload'] and request.POST:
-        upload = request.FILES['upload']
-        fss = FileSystemStorage(location='media/audio/')
-        file = fss.save(upload.name, upload)
-        extension = request.POST.get('convert_to')
-        full_name = audio_convert(file, extension)
-        if full_name == 'Unknown extension':
-            fss = FileSystemStorage(location='../../')
-            return render(request, 'mainapp/audio.html', {'extension_error': full_name, 'title': 'Audio Upload'})
-        file_url = fss.url(f'/audio/{full_name}')
-        return render(request, 'mainapp/audio.html', {'file_url': file_url, 'title': 'Audio Upload'})
+    try:
+        if request.method == 'POST' and request.FILES['upload'] and request.POST:
+            upload = request.FILES['upload']
+            fss = FileSystemStorage(location='media/audio/')
+            file = fss.save(upload.name, upload)
+            extension = request.POST.get('convert_to')
+            full_name = audio_convert(file, extension)
+            if full_name == 'Unknown extension':
+                fss = FileSystemStorage(location='../../')
+                return render(request, 'mainapp/audio.html', {'extension_error': full_name, 'title': 'Audio Upload'})
+            file_url = fss.url(f'/audio/{full_name}')
+            return render(request, 'mainapp/audio.html', {'file_url': file_url, 'title': 'Audio Upload'})
+    except:
+        return render(request, 'mainapp/audio.html', {'load_error': 'Please load a file', 'title': 'Audio Upload'})
     return render(request, 'mainapp/audio.html', {'title': 'Audio Upload'})
-
-
-# def download(request, filename):
-#     file_path = os.path.join(settings.MEDIA_ROOT, path)
