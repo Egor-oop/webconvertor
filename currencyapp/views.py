@@ -12,7 +12,6 @@ def crypto_currency(cur):
 
     j = requests.get(url_all)
     data = json.loads(j.text)
-    all_cur = [d['Currency'] for d in data['result']]
     crypto = cur
 
     cur_url = f'https://api.bittrex.com/api/v1.1/public/getticker?market=USD-{crypto}'
@@ -45,5 +44,6 @@ def convert(request):
         currency1 = request.POST['first_cur']
         currency2 = request.POST['second_cur']
         convert_result = convert_currency(currency1, currency2, float(price))
-        return render(request, 'currencyapp/convert_currency.html', {'convert_result': convert_result, 'title': 'Convert Currency'})
+        return render(request, 'currencyapp/convert_currency.html',
+                      {'convert_result': convert_result, 'title': 'Convert Currency'})
     return render(request, 'currencyapp/convert_currency.html', {'title': 'Convert Currency'})
